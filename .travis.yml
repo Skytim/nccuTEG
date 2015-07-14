@@ -1,0 +1,36 @@
+sudo: false
+language: python
+python:
+- '2.7'
+env:
+- PYBOSSA_SETTINGS='../settings_test.py' PYBOSSA_REDIS_CACHE_DISABLED='1' SWIG=swig-2.0.11
+services:
+- redis-server
+addons:
+  postgresql: "9.3"
+before_install:
+# Install swig by compiling (sudo not allowed)
+- wget http://prdownloads.sourceforge.net/swig/$SWIG.tar.gz
+- tar -xf $SWIG.tar.gz
+- pushd $SWIG && mkdir vendor
+- ./configure --prefix=`pwd`/vendor
+- make -j 5 && make install
+- popd
+- export PATH=${PATH}:`pwd`/$SWIG/vendor/bin
+- redis-server --version
+- redis-server contrib/redis/sentinel.conf --sentinel
+install:
+- pip install -U pip
+- pip install -r requirements.txt
+before_script:
+- pip --version
+- psql -c "create user rtester with createdb login password 'rtester'" -U postgres
+- psql -c "create database pybossa_test owner rtester encoding 'UTF-8' lc_collate 'en_US.UTF-8' lc_ctype 'en_US.UTF-8' template template0;" -U postgres
+script: nosetests test/
+notifications:
+  hipchat: 11e2176ebb4b7372ee0d1fbc8abf4d@Github
+  slack:
+    secure: lgJj/SealCb3hZsMvclA9VQGwx9TJrtK6ccOZiiHZpJa5in0UkRwE6ymrZ5wqwUagAVwOLYVKHdmrtPMPsaOqavnzq9ItJFqSRo8T5ZgKK+m+X9l88ROn7+QfJyPUkpblhSXMm6+s7duBjdM/no80lA4GEoNWD5G5uQwjJWQSWk=
+after_success:
+- pip install coveralls
+- coveralls
