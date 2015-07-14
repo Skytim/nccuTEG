@@ -19,13 +19,14 @@ nccuTEG是基於pybossa所建立的專案,目的在於幫助TEG(電子治理研�
   `apt-get install git`
 
 如果是Mac請下載git安裝
+
 http://sourceforge.net/projects/git-osx-installer/
 
 ##設置PyBossa使用Vagrant
 你需要安裝以下套件
 
-1.  VirtualBox (min version 4.2.10)
-2.  Vagrant (min version 1.2.1)
+1.  [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (min version 4.2.10)
+2.  [Vagrant](https://www.vagrantup.com/downloads.html) (min version 1.2.1)
 3.  Vagrant Plugin (vagrant-ansible-local)
 
 安裝完1.2以後安裝3請在終端機輸入:
