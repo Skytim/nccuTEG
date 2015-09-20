@@ -92,7 +92,7 @@ def get_periodic_jobs(queue):
     # Default ones
     jobs = get_default_jobs()
     # Create ZIPs for all projects
-    zip_jobs = get_export_task_jobs(queue) if queue in ('high', 'low') else []
+    zip_jobs = get_export_task_jobs(queue)
     # Based on type of user
     project_jobs = get_project_jobs() if queue == 'super' else []
     autoimport_jobs = get_autoimport_jobs() if queue == 'low' else []
